@@ -5,6 +5,6 @@
 #include <openvino/openvino.hpp>
 #include <string>
 
-ov::Tensor imageToTensor(const std::string& imagePath, const ov::Shape& inputShape);
+ov::Tensor imageToTensor(const std::string& image_path, const ov::element::Type image_element_type);
 
-#endif UTILS_HPP
+#endif
