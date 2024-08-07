@@ -30,3 +30,27 @@
 *.exe
 *.out
 *.app
+
+# Build directory
+/build/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled object files, libraries, and executables
+*.slo
+*.lo
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.exe
+
+# IDE-specific files (optional, depending on what you use)
+.vscode/
+.idea/
+*.user
