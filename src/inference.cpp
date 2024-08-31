@@ -9,7 +9,8 @@ int main(int argc, char* argv[])
 
     if (argc < 3)
     {
-        std::cerr << "Too few arguments: " << argc << " provided" << std::endl;
+        std::cerr << "Too few arguments: " << argc << " provided" << std::endl << std::endl;
+        std::cout << "The first argument is ofc name of a binary" << std::endl << "The second is a path to yolov3-tiny model" << std::endl << "The third one is a path to the image for inference" << std::endl;
         std::exit(EXIT_FAILURE);
     }
     const std::string model_path{ argv[1] };

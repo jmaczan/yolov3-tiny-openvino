@@ -50,7 +50,6 @@ Makefile
 *.dll
 *.exe
 
-# IDE-specific files (optional, depending on what you use)
 .vscode/
 .idea/
 *.user
