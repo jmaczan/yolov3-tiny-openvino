@@ -1,7 +1,5 @@
-#include <openvino/openvino.hpp>
-#include <opencv2/opencv.hpp>
-#include "utils.hpp"
 #include <iostream>
+#include "person_detector.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -21,19 +19,19 @@ int main(int argc, char* argv[])
     ov::CompiledModel compiled_model = core.compile_model(model, compile_target);
     ov::InferRequest infer_request = compiled_model.create_infer_request();
 
-    ov::Tensor image = imageToTensor(image_path, model->get_output_element_type(0));
-    infer_request.set_input_tensor(0, image);
+    // ov::Tensor image = imageToTensor(image_path, model->get_output_element_type(0));
+    // infer_request.set_input_tensor(0, image);
 
-    // either sync
-    infer_request.infer();
+    // // either sync
+    // infer_request.infer();
 
-    // or async
-    // infer_request.start_async();
-    // infer_request.wait();
+    // // or async
+    // // infer_request.start_async();
+    // // infer_request.wait();
 
-    ov::Tensor boxes_scores = infer_request.get_output_tensor(1);
+    // ov::Tensor boxes_scores = infer_request.get_output_tensor(1);
 
-    const float* boxes_scores_buffer = boxes_scores.data<const float>();
+    // const float* boxes_scores_buffer = boxes_scores.data<const float>();
 
-    std::cout << boxes_scores.get_size();
+    // std::cout << boxes_scores.get_size();
 }
