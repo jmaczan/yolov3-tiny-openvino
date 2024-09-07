@@ -4,6 +4,19 @@ High performance human detector using YOLOv3-tiny with OpenVINO and OpenCV in C+
 
 > Designed for a person detection on a very low-end hardware like my Lenovo ThinkPad x230 <3
 
+Still in development
+
+## Benchmark
+
+Benchmarked on macOS 14.6.1, Air M2 16GB
+
+```
+Time (mean ± σ):     565.9 ms ±  16.8 ms    [User: 931.6 ms, System: 91.6 ms]
+Range (min … max):   551.1 ms … 638.6 ms    50 runs
+```
+
+More benchmarks on low-end hw will come later
+
 ### Useful resources
 
 - https://docs.openvino.ai/2024/learn-openvino/openvino-samples/hello-nv12-input-classification.html
