@@ -1,13 +1,20 @@
 #include "person_detector.hpp"
 #include <iostream>
 #include <stdexcept>
-#include "constants.hpp"
-#include "utils.hpp"
+#include <opencv2/opencv.hpp>
+#include <openvino/openvino.hpp>
 
-const ov::Tensor image_shape_tensor = ov::Tensor(ov::element::f32, { 1, 2 }, std::vector<float>{YOLO_INPUT_DIMENSIONS_SIZE_T, YOLO_INPUT_CHANNELS_SIZE_T}.data());
 const float CONFIDENCE_THRESHOLD = 0.5;
 const float NMS_THRESHOLD = 0.4;
 const int PERSON_CLASS_ID = 0;
+constexpr int YOLO_INPUT_DIMENSIONS = 416;
+constexpr int YOLO_INPUT_DIMENSIONS_SQUARE = YOLO_INPUT_DIMENSIONS * YOLO_INPUT_DIMENSIONS;
+constexpr int YOLO_INPUT_CHANNELS = 3;
+constexpr size_t YOLO_INPUT_CHANNELS_SIZE_T = 3;
+constexpr size_t YOLO_INPUT_DIMENSIONS_SIZE_T = 416;
+constexpr int PERSON_LABEL_INDEX = 0;
+constexpr float SCALE_FACTOR = 1.0f / 255.0f;
+const ov::Tensor image_shape_tensor = ov::Tensor(ov::element::f32, { 1, 2 }, std::vector<float>{YOLO_INPUT_DIMENSIONS_SIZE_T, YOLO_INPUT_CHANNELS_SIZE_T}.data());
 
 namespace person_detector {
     PersonDetector::PersonDetector(const std::string& model_path, const std::string& compile_target) : core_(), compile_target_(compile_target) {
@@ -100,7 +107,8 @@ namespace person_detector {
 
         }
 
-        std::cout << "Person detected: " << (person_detected ? "yes" : "no") << std::endl;
-        std::cout << *class_ids.data() << std::endl;
+        if (person_detected) {
+            std::cout << "Person detected" << std::endl;
+        }
     }
 }

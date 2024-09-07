@@ -38,9 +38,8 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 # macOS (brew)
 include_directories(${OpenVINO_INCLUDE_DIRS})
 
-add_executable(yolov3-tiny-openvino src/inference.cpp src/utils.cpp src/person_detector.cpp)
+add_executable(yolov3-tiny-openvino src/inference.cpp src/person_detector.cpp)
 
 target_link_libraries(yolov3-tiny-openvino PRIVATE openvino::runtime ${OpenCV_LIBS})
 
-file(COPY ${CMAKE_SOURCE_DIR}/src/constants.hpp DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ${CMAKE_SOURCE_DIR}/src/person_detector.hpp DESTINATION ${CMAKE_BINARY_DIR})

@@ -1,5 +1,4 @@
 #include <iostream>
-#include "constants.hpp"
 #include "person_detector.hpp"
 
 int main(int argc, char* argv[])
