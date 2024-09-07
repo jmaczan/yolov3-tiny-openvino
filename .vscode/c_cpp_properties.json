@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "name": "Mac",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "/usr/local/include",
+        "/opt/homebrew/Cellar/opencv/4.10.0_4/include/opencv4",
+        "/opt/homebrew/Cellar/openvino/2024.3.0/include"
+      ],
+      "defines": [],
+      "macFrameworkPath": [
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+      ],
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "macos-clang-arm64"
+    }
+  ],
+  "version": 4
+}

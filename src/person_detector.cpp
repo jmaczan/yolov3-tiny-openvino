@@ -1,13 +1,15 @@
 #include "person_detector.hpp"
 #include <iostream>
+// #include <omp.h>
 #include <stdexcept>
-#include <constants.hpp>
-#include <utils.hpp>
+#include "constants.hpp"
+#include "utils.hpp"
 
 namespace person_detector {
     PersonDetector::PersonDetector(const std::string& model_path, const std::string& compile_target) : core_(), compile_target_(compile_target) {
         try {
             model_ = core_.read_model(model_path);
+            model_->reshape({ 1, YOLO_INPUT_CHANNELS, YOLO_INPUT_DIMENSIONS, YOLO_INPUT_DIMENSIONS });
             compiled_model_ = core_.compile_model(model_, compile_target);
             infer_request_ = compiled_model_.create_infer_request();
         }
@@ -56,7 +58,7 @@ namespace person_detector {
         return ov::Tensor(ov::element::f32, { 1, YOLO_INPUT_CHANNELS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T }, raw_input_image.data());
     }
 
-    void process_outputs() {
+    void PersonDetector::process_outputs() {
 
     }
 }

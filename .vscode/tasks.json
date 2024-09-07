@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "CMake Configure",
+      "command": "cmake",
+      "args": ["-B", "${workspaceFolder}/build", "-DCMAKE_BUILD_TYPE=Debug"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$gcc"],
+      "detail": "CMake configure task"
+    },
+    {
+      "type": "shell",
+      "label": "CMake Build",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "${workspaceFolder}/build",
+        "--config",
+        "Debug",
+        "--",
+        "-j4"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "CMake template build task"
+    },
+    {
+      "type": "shell",
+      "label": "Run executable",
+      "command": "${workspaceFolder}/build/yolov3-tiny-openvino",
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "problemMatcher": [],
+      "detail": "Run the built executable"
+    }
+  ]
+}

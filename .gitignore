@@ -50,6 +50,11 @@ Makefile
 *.dll
 *.exe
 
-.vscode/
+# .vscode/
 .idea/
 *.user
+
+# models are here
+public/
+
+.env

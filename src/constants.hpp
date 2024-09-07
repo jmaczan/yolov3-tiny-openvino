@@ -1,12 +1,12 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-consteval int YOLO_INPUT_DIMENSIONS = 416;
-consteval int YOLO_INPUT_DIMENSIONS_SQUARE = YOLO_INPUT_DIMENSIONS * YOLO_INPUT_DIMENSIONS;
-consteval int YOLO_INPUT_CHANNELS = 3;
-consteval size_t YOLO_INPUT_CHANNELS_SIZE_T = 3;
-consteval size_t YOLO_INPUT_DIMENSIONS_SIZE_T = 416;
-consteval int PERSON_LABEL_INDEX = 0;
-consteval float SCALE_FACTOR = 1.0f / 255.0f;
+constexpr int YOLO_INPUT_DIMENSIONS = 416;
+constexpr int YOLO_INPUT_DIMENSIONS_SQUARE = YOLO_INPUT_DIMENSIONS * YOLO_INPUT_DIMENSIONS;
+constexpr int YOLO_INPUT_CHANNELS = 3;
+constexpr size_t YOLO_INPUT_CHANNELS_SIZE_T = 3;
+constexpr size_t YOLO_INPUT_DIMENSIONS_SIZE_T = 416;
+constexpr int PERSON_LABEL_INDEX = 0;
+constexpr float SCALE_FACTOR = 1.0f / 255.0f;
 
 #endif
