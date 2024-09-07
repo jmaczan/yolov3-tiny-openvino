@@ -1,7 +1,8 @@
 #include "person_detector.hpp"
 #include <iostream>
 #include <stdexcept>
-#include "utils.hpp"
+#include <constants.hpp>
+#include <utils.hpp>
 
 namespace person_detector {
     PersonDetector::PersonDetector(const std::string& model_path, const std::string& compile_target) : core_(), compile_target_(compile_target) {
@@ -31,20 +32,28 @@ namespace person_detector {
     }
 
     ov::Tensor PersonDetector::preprocess_input(const std::string& image_path) const {
-        cv::Mat image = cv::imread(image_path);
+        static cv::Mat resized_image(YOLO_INPUT_DIMENSIONS, YOLO_INPUT_DIMENSIONS, CV_8UC3);
+        static std::vector<float> raw_input_image(YOLO_INPUT_DIMENSIONS_SQUARE * YOLO_INPUT_CHANNELS); // RGB
+
+        cv::Mat image = cv::imread(image_path, cv::IMREAD_COLOR); // BGR
 
         if (image.empty()) {
             throw std::runtime_error("Can't read image from " + image_path);
         }
 
-        ov::Shape expected_shape = model_->input().get_shape();
-        int expected_height = expected_shape[2];
-        int expected_width = expected_shape[3];
+        cv::resize(image, resized_image, resized_image.size(), 0, 0, cv::INTER_LINEAR);
 
-        cv::Mat resized_image;
-        cv::resize(image, resized_image, cv::Size(expected_width, expected_height));
+        cv::Mat channels[3];
+        cv::split(resized_image, channels);
 
-        return imageToTensor(image_path, model_->get_output_element_type(0));
+#pragma omp parallel for
+        for (int i = 0; i < YOLO_INPUT_DIMENSIONS_SQUARE; ++i) {
+            raw_input_image[i] = channels[2].data[i] * SCALE_FACTOR;
+            raw_input_image[i + YOLO_INPUT_DIMENSIONS_SQUARE] = channels[1].data[i] * SCALE_FACTOR;
+            raw_input_image[i + 2 * YOLO_INPUT_DIMENSIONS_SQUARE] = channels[0].data[i] * SCALE_FACTOR;
+        }
+
+        return ov::Tensor(ov::element::f32, { 1, YOLO_INPUT_CHANNELS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T }, raw_input_image.data());
     }
 
     void process_outputs() {
