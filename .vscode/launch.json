@@ -8,13 +8,14 @@
       "program": "${workspaceFolder}/build/yolov3-tiny-openvino",
       "args": [
         "/Users/jedrzej/Documents/code/yolov3-tiny-openvino/public/yolo-v3-tiny-onnx/tiny-yolov3-11.onnx",
-        "~/Downloads/yolov3-test-image.jpg"
+        "/Users/jedrzej/Downloads/yolov3-test-image.jpg"
       ],
       "cwd": "${workspaceFolder}/build",
       "preLaunchTask": "CMake Build",
       "env": {
         "DYLD_LIBRARY_PATH": "/opt/homebrew/Cellar/opencv/4.10.0_4/lib:/opt/homebrew/Cellar/openvino/2024.3.0/lib:${env:DYLD_LIBRARY_PATH}"
-      }
+      },
+      "console": "integratedTerminal"
     }
   ]
 }
