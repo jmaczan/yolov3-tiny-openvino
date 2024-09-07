@@ -8,7 +8,7 @@ Still in development
 
 ## Benchmark
 
-Benchmarked on macOS 14.6.1, Air M2 16GB
+Benchmarked on macOS 14.6.1, Air M2 16GB with `hyperfine --warmup 3 --runs 50`
 
 ```
 Time (mean ± σ):     565.9 ms ±  16.8 ms    [User: 931.6 ms, System: 91.6 ms]

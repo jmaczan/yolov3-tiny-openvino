@@ -57,7 +57,6 @@ namespace person_detector {
         cv::Mat channels[3];
         cv::split(resized_image, channels);
 
-#pragma omp parallel for
         for (int i = 0; i < YOLO_INPUT_DIMENSIONS_SQUARE; ++i) {
             raw_input_image[i] = channels[2].data[i] * SCALE_FACTOR;
             raw_input_image[i + YOLO_INPUT_DIMENSIONS_SQUARE] = channels[1].data[i] * SCALE_FACTOR;
