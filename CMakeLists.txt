@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
 project(yolov3-tiny-openvino)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
@@ -8,6 +14,12 @@ endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# For Debug
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
+# For Release
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -03")
 
 # Debian
 # set(OpenVINO_DIR "/opt/intel/openvino_2023.3.0/runtime/cmake")
@@ -19,7 +31,12 @@ find_package(OpenVINO REQUIRED)
 find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${OpenVINO_INCLUDE_DIRS}) # "/usr/local/include/opencv4"
+
+# Debian
+# include_directories("/usr/local/include/opencv4")
+
+# macOS (brew)
+include_directories(${OpenVINO_INCLUDE_DIRS})
 
 add_executable(yolov3-tiny-openvino src/inference.cpp src/utils.cpp src/person_detector.cpp)
 
