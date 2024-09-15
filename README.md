@@ -8,6 +8,10 @@ Still in development
 
 ## Performance
 
+Lenovo ThinkPad x230, Debian 12, 6.1.0-23-amd64:
+
+- Detection: 0.32s
+
 Macbook Air M2 16GB, macOS 14.6.1:
 
 - Detection: 0.15s
