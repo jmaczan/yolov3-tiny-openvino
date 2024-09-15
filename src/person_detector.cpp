@@ -4,8 +4,8 @@
 #include <opencv2/opencv.hpp>
 #include <openvino/openvino.hpp>
 
-const float CONFIDENCE_THRESHOLD = 0.5;
-const int PERSON_CLASS_ID = 0;
+constexpr float CONFIDENCE_THRESHOLD = 0.5;
+constexpr int PERSON_CLASS_ID = 0;
 constexpr int YOLO_INPUT_DIMENSIONS = 416;
 constexpr int YOLO_INPUT_DIMENSIONS_SQUARE = YOLO_INPUT_DIMENSIONS * YOLO_INPUT_DIMENSIONS;
 constexpr int YOLO_INPUT_CHANNELS = 3;
@@ -18,7 +18,9 @@ namespace person_detector {
     PersonDetector::PersonDetector(const std::string& model_path, const std::string& compile_target) : core_(), compile_target_(compile_target) {
         try {
             model_ = core_.read_model(model_path);
-            compiled_model_ = core_.compile_model(model_, compile_target);
+            compiled_model_ = core_.compile_model(model_, compile_target, {
+               ov::hint::performance_mode(ov::hint::PerformanceMode::LATENCY),
+                });
             infer_request_ = compiled_model_.create_infer_request();
         }
         catch (const std::exception& e) {
@@ -28,8 +30,8 @@ namespace person_detector {
 
     void PersonDetector::detect(const std::string& image_path) {
         try {
-            const ov::Tensor input_tensor = preprocess_input(image_path);
-            infer_request_.set_tensor("input_1", input_tensor);
+            input_tensor_ = preprocess_input(image_path);
+            infer_request_.set_tensor("input_1", input_tensor_);
             infer_request_.set_tensor("image_shape", image_shape_tensor);
 
             infer_request_.start_async();
@@ -54,55 +56,49 @@ namespace person_detector {
 
         cv::resize(image, resized_image, resized_image.size(), 0, 0, cv::INTER_LINEAR);
 
-        cv::Mat channels[3];
-        cv::split(resized_image, channels);
-
-        for (int i = 0; i < YOLO_INPUT_DIMENSIONS_SQUARE; ++i) {
-            raw_input_image[i] = channels[2].data[i] * SCALE_FACTOR;
-            raw_input_image[i + YOLO_INPUT_DIMENSIONS_SQUARE] = channels[1].data[i] * SCALE_FACTOR;
-            raw_input_image[i + 2 * YOLO_INPUT_DIMENSIONS_SQUARE] = channels[0].data[i] * SCALE_FACTOR;
-        }
+        cv::parallel_for_(cv::Range(0, YOLO_INPUT_DIMENSIONS), [&](const cv::Range& range) {
+            for (int r = range.start; r < range.end; ++r) {
+                for (int c = 0; c < YOLO_INPUT_DIMENSIONS; ++c) {
+                    const cv::Vec3b& pixel = resized_image.at<cv::Vec3b>(r, c);
+                    int idx = r * YOLO_INPUT_DIMENSIONS + c;
+                    raw_input_image[idx] = pixel[2] * SCALE_FACTOR;
+                    raw_input_image[idx + YOLO_INPUT_DIMENSIONS_SQUARE] = pixel[1] * SCALE_FACTOR;
+                    raw_input_image[idx + 2 * YOLO_INPUT_DIMENSIONS_SQUARE] = pixel[0] * SCALE_FACTOR;
+                }
+            }
+            });
 
         return ov::Tensor(ov::element::f32, { 1, YOLO_INPUT_CHANNELS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T, YOLO_INPUT_DIMENSIONS_SIZE_T }, raw_input_image.data());
     }
 
     void PersonDetector::process_outputs() {
-        ov::Tensor boxes_tensor = infer_request_.get_tensor("yolonms_layer_1");
-        ov::Tensor scores_tensor = infer_request_.get_tensor("yolonms_layer_1:1");
-        ov::Tensor indices_tensor = infer_request_.get_tensor("yolonms_layer_1:2");
+        boxes_tensor_ = infer_request_.get_tensor("yolonms_layer_1");
+        scores_tensor_ = infer_request_.get_tensor("yolonms_layer_1:1");
+        indices_tensor_ = infer_request_.get_tensor("yolonms_layer_1:2");
 
-        const float* boxes_data = boxes_tensor.data<const float>();
-        const float* scores_data = scores_tensor.data<const float>();
-        const int32_t* indices_data = indices_tensor.data<const int32_t>();
+        const float* scores_data = scores_tensor_.data<const float>();
+        const int32_t* indices_data = indices_tensor_.data<const int32_t>();
 
-        size_t num_candidates = boxes_tensor.get_shape()[1];
-        size_t num_classes = scores_tensor.get_shape()[1];
-        size_t num_detections = indices_tensor.get_shape()[1];
-
-        std::vector<cv::Rect> boxes;
-        std::vector<float> confidences;
-        std::vector<int> class_ids;
+        size_t num_candidates = boxes_tensor_.get_shape()[1];
+        size_t num_detections = indices_tensor_.get_shape()[1];
 
         bool person_detected = false;
 
         for (size_t i = 0; i < num_detections; ++i) {
-            int batch_idx = indices_data[i * 3];
             int class_idx = indices_data[i * 3 + 1];
             int box_idx = indices_data[i * 3 + 2];
 
-            if (class_idx != PERSON_CLASS_ID) {
-                continue;
+            if (class_idx == PERSON_CLASS_ID) {
+                float confidence = scores_data[class_idx * num_candidates + box_idx];
+                std::cout << "Confidence: " << confidence << std::endl;
+                if (confidence > CONFIDENCE_THRESHOLD) {
+                    std::cout << "Person detected" << std::endl;
+                    person_detected = true;
+                    return;
+                }
             }
-
-            float confidence = scores_data[class_idx * num_candidates + box_idx];
-
-            if (confidence > CONFIDENCE_THRESHOLD) {
-                std::cout << "Person detected" << std::endl;
-                class_ids.push_back(class_idx);
-                person_detected = true;
-                break;
-            }
-
         }
+
+        std::cout << "No person detected" << std::endl;
     }
 }

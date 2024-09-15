@@ -18,6 +18,11 @@ namespace person_detector {
         ov::InferRequest infer_request_;
         std::string compile_target_;
 
+        ov::Tensor input_tensor_;
+        ov::Tensor boxes_tensor_;
+        ov::Tensor scores_tensor_;
+        ov::Tensor indices_tensor_;
+
         ov::Tensor preprocess_input(const std::string& image_path) const;
         void process_outputs();
     };
