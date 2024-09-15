@@ -9,14 +9,14 @@ chmod +x build_release.sh
 ./build_release.sh
 ```
 
-Output program path is `build/yolov3-tiny-openvino`
+Output path is `build/yolov3-tiny-openvino`
 
 ## Run
 
 Download onnx model from here https://docs.openvino.ai/2022.3/omz_models_model_yolo_v3_tiny_onnx.html
 
 ```sh
-cd build && ./yolov3-tiny-openvino path_to_model_in_onnx_format path_to_input_image [compile_target]
+cd build && ./yolov3-tiny-openvino <path_to_model_in_onnx_format> <path_to_input_image> [compile_target]
 ```
 
 ## Performance
