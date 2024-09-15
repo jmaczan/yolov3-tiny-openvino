@@ -21,7 +21,7 @@ cd build && ./yolov3-tiny-openvino <path_to_model_in_onnx_format> <path_to_input
 
 ## Performance
 
-Lenovo ThinkPad x230, Debian 12, 6.1.0-23-amd64:
+Lenovo ThinkPad x230 8GB, Debian 12, 6.1.0-23-amd64:
 
 - Detection: 0.32s
 
