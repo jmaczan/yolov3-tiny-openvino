@@ -15,6 +15,21 @@
       "cStandard": "c17",
       "cppStandard": "c++20",
       "intelliSenseMode": "macos-clang-arm64"
+    },
+    {
+      "name": "Debian",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "/usr/include",
+        "/usr/local/include",
+        "/usr/include/opencv4",
+        "/opt/intel/openvino_2023/runtime/include"
+      ],
+      "defines": [],
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "linux-gcc-x64",
+      "compilerPath": "/usr/bin/g++"
     }
   ],
   "version": 4
