@@ -2,20 +2,17 @@
 
 High performance human detector using YOLOv3-tiny with OpenVINO and OpenCV in C++
 
-> Designed for a person detection on a very low-end hardware like my Lenovo ThinkPad x230 <3
+> Designed for a person detection on a very low-end hardware like my good old buddy Lenovo ThinkPad x230 <3
 
 Still in development
 
-## Benchmark
+## Performance
 
-Benchmarked on macOS 14.6.1, Air M2 16GB with `hyperfine --warmup 3 --runs 50`
+Macbook Air M2 16GB, macOS 14.6.1:
 
-```
-Time (mean ± σ):     565.9 ms ±  16.8 ms    [User: 931.6 ms, System: 91.6 ms]
-Range (min … max):   551.1 ms … 638.6 ms    50 runs
-```
+- Detection: 0.15s
 
-More benchmarks on low-end hw will come later
+More serious benchmarks on will come later
 
 ### Useful resources
 

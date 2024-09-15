@@ -75,6 +75,11 @@
     "list": "cpp",
     "map": "cpp",
     "set": "cpp",
-    "unordered_set": "cpp"
+    "unordered_set": "cpp",
+    "codecvt": "cpp",
+    "fstream": "cpp",
+    "typeindex": "cpp",
+    "functional": "cpp",
+    "chrono": "cpp"
   }
 }

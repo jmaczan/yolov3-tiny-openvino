@@ -17,14 +17,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # For Debug
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+add_compile_definitions($<$<CONFIG:Debug>:DEBUG_BUILD>)
+
+# For Benchmark
+set(CMAKE_CXX_FLAGS_BENCHMARK "-O3 -DNDEBUG -DBENCHMARK_BUILD")
 
 # For Release
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
 
-# Debian
+# OpenVINO
+
+## Debian
 # set(OpenVINO_DIR "/opt/intel/openvino_2023.3.0/runtime/cmake")
 
-# macOS (brew)
+## macOS (brew)
 set(OpenVINO_DIR "/opt/homebrew/Cellar/openvino/2024.3.0/lib/cmake")
 
 find_package(OpenVINO REQUIRED)
@@ -32,10 +38,12 @@ find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-# Debian
+# OpenCV
+
+## Debian
 # include_directories("/usr/local/include/opencv4")
 
-# macOS (brew)
+## macOS (brew)
 include_directories(${OpenVINO_INCLUDE_DIRS})
 
 add_executable(yolov3-tiny-openvino src/inference.cpp src/person_detector.cpp)

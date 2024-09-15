@@ -97,15 +97,12 @@ namespace person_detector {
             float confidence = scores_data[class_idx * num_candidates + box_idx];
 
             if (confidence > CONFIDENCE_THRESHOLD) {
+                std::cout << "Person detected" << std::endl;
                 class_ids.push_back(class_idx);
                 person_detected = true;
                 break;
             }
 
-        }
-
-        if (person_detected) {
-            std::cout << "Person detected" << std::endl;
         }
     }
 }

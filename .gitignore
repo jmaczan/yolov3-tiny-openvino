@@ -58,3 +58,4 @@ Makefile
 public/
 
 .env
+.DS_Store
