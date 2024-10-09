@@ -38,6 +38,21 @@ Macbook Air M2 16GB, macOS 14.6.1:
 - https://docs.openvino.ai/2024/openvino-workflow/running-inference/integrate-openvino-with-your-application.html
 - https://github.com/openvinotoolkit/open_model_zoo/blob/master/models/public/yolo-v3-tiny-onnx/README.md
 
+
+## Cite
+If you use this software in your research, please use the following citation:
+
+```bibtex
+@software{Maczan_yolov3tinyopenvino_2024,
+author = {Maczan, Jędrzej Paweł},
+title = {{yolov3-tiny-openvino - High performance human detector}},
+url = {https://github.com/jmaczan/yolov3-tiny-openvino},
+year = {2024},
+publisher = {GitHub}
+}
+```
+
+
 ### License
 
 GPL-3.0 license
